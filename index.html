@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Space Wall Clock Screensaver</title>
+    <title>EDC Office Screensaver</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
 
@@ -17,15 +17,12 @@
         body {
             background-color: #000;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
-            /* This gap forces empty space between the clock and the text */
-            gap: 60px; 
             height: 100vh;
             font-family: 'Times New Roman', Times, serif;
             overflow: hidden;
-            cursor: none; 
+            cursor: none; /* Hide cursor for screensaver mode */
         }
 
         /* Digital Space Background Canvas */
@@ -36,6 +33,25 @@
             width: 100%;
             height: 100%;
             z-index: 0;
+        }
+
+        /* --- NEW: Floating Wrapper to prevent screen burn-in --- */
+        .screensaver-content {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 60px; /* Space between clock and text */
+            z-index: 10;
+            /* Slow, random-looking floating animation */
+            animation: floatAround 45s ease-in-out infinite alternate;
+        }
+
+        @keyframes floatAround {
+            0%   { transform: translate(-4vw, -4vh); }
+            33%  { transform: translate(4vw, 2vh); }
+            66%  { transform: translate(-2vw, 4vh); }
+            100% { transform: translate(3vw, -3vh); }
         }
 
         /* The Classic Clock */
@@ -49,20 +65,19 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 10;
             
             box-shadow: 
-                0 0 50px rgba(0, 255, 255, 0.2), 
+                0 0 50px rgba(0, 255, 255, 0.15), 
                 0 0 100px rgba(0, 150, 255, 0.1),
-                inset 0 10px 20px rgba(255,255,255,0.1),
+                inset 0 10px 20px rgba(255,255,255,0.05),
                 inset 0 -10px 20px rgba(0,0,0,0.8);
             
-            animation: pulse-glow 4s infinite alternate;
+            animation: pulse-glow 6s infinite alternate;
         }
 
         @keyframes pulse-glow {
             0% { box-shadow: 0 0 30px rgba(0, 200, 255, 0.1), inset 0 10px 20px rgba(255,255,255,0.1); }
-            100% { box-shadow: 0 0 70px rgba(0, 255, 255, 0.3), 0 0 120px rgba(0, 100, 255, 0.2), inset 0 10px 20px rgba(255,255,255,0.1); }
+            100% { box-shadow: 0 0 70px rgba(0, 200, 255, 0.2), 0 0 120px rgba(0, 100, 255, 0.15), inset 0 10px 20px rgba(255,255,255,0.1); }
         }
 
         .clock-inner-rim {
@@ -75,9 +90,10 @@
             box-shadow: inset 0 0 30px rgba(0,0,0,0.3);
         }
 
+        /* Custom EDC Branding */
         .brand-text {
             position: absolute;
-            top: 25%;
+            top: 22%;
             left: 50%;
             transform: translateX(-50%);
             text-align: center;
@@ -86,17 +102,19 @@
         }
 
         .brand-text .name {
-            font-size: 1.6rem;
+            font-size: 1.5rem;
             font-weight: bold;
-            letter-spacing: 2px;
+            letter-spacing: 4px;
             font-family: Arial, sans-serif;
+            color: #111;
         }
 
-        .brand-text .quartz {
-            font-size: 0.85rem;
-            letter-spacing: 4px;
+        .brand-text .location {
+            font-size: 1rem;
+            font-weight: bold;
+            letter-spacing: 3px;
             margin-top: 5px;
-            color: #555;
+            color: black;
             font-family: Arial, sans-serif;
         }
 
@@ -173,29 +191,27 @@
 
         /* Information Panel Styling */
         .info-panel {
-            /* Removed absolute positioning to allow it to sit in the empty space safely */
             text-align: center;
-            z-index: 20;
             font-family: 'Share Tech Mono', monospace;
             text-transform: uppercase;
         }
 
         .date-display {
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             color: #00ffcc;
-            letter-spacing: 5px;
+            letter-spacing: 4px;
             margin-bottom: 15px;
-            text-shadow: 0 0 15px rgba(0, 255, 204, 0.6);
+            text-shadow: 0 0 15px rgba(0, 255, 204, 0.4);
         }
 
         .welcome-text {
-            font-size: 2.2rem;
+            font-size: 2rem;
             color: #ffffff;
             letter-spacing: 4px;
             text-shadow: 
-                0 0 10px rgba(255, 255, 255, 0.5),
-                0 0 20px rgba(0, 150, 255, 0.8);
-            border-top: 1px solid rgba(255, 255, 255, 0.2);
+                0 0 10px rgba(255, 255, 255, 0.3),
+                0 0 20px rgba(0, 150, 255, 0.6);
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
             padding-top: 15px;
         }
     </style>
@@ -204,33 +220,35 @@
 
     <canvas id="space"></canvas>
 
-    <div class="clock-container">
-        <div class="clock-inner-rim" id="clockFace">
-            <div class="glass-glare"></div>
-            <div class="brand-text">
-                <div class="name">CLASSIC</div>
-                <div class="quartz">QUARTZ</div>
+    <div class="screensaver-content">
+        <div class="clock-container">
+            <div class="clock-inner-rim" id="clockFace">
+                <div class="glass-glare"></div>
+                <div class="brand-text">
+                    <div class="name">EDC</div>
+                    <div class="location">SIDDHARTHNAGAR</div>
+                </div>
+                <div class="hand hour-hand" id="hour"></div>
+                <div class="hand minute-hand" id="minute"></div>
+                <div class="hand second-hand" id="second"></div>
+                <div class="center-pin"></div>
             </div>
-            <div class="hand hour-hand" id="hour"></div>
-            <div class="hand minute-hand" id="minute"></div>
-            <div class="hand second-hand" id="second"></div>
-            <div class="center-pin"></div>
+        </div>
+
+        <div class="info-panel">
+            <div class="date-display" id="date">DAY | 00.00.0000</div>
+            
         </div>
     </div>
 
-    <div class="info-panel">
-        <div class="date-display" id="date">00.00.0000</div>
-        <div class="welcome-text">Welcome to EDC Siddharthnagar</div>
-    </div>
-
     <script>
-        // Digital Space Background Logic
+        // Digital Space Background Logic (Calmer Speed)
         const canvas = document.getElementById('space');
         const ctx = canvas.getContext('2d');
         let width, height;
         let stars = [];
-        const NUM_STARS = 400; 
-        const SPEED = 1.5;     
+        const NUM_STARS = 350; 
+        const SPEED = 0.4; // Slower, calmer ambient drift
 
         function resizeCanvas() {
             width = canvas.width = window.innerWidth;
@@ -248,7 +266,7 @@
         }
 
         function animateSpace() {
-            ctx.fillStyle = 'rgba(5, 5, 10, 0.3)';
+            ctx.fillStyle = 'rgba(2, 3, 8, 0.4)'; // Deeper, darker space trail
             ctx.fillRect(0, 0, width, height);
             
             const cx = width / 2;
@@ -265,9 +283,10 @@
 
                 const px = cx + (star.x / star.z) * cx;
                 const py = cy + (star.y / star.z) * cx;
-                const size = Math.max(0, (1 - star.z / width) * 2.5);
+                const size = Math.max(0, (1 - star.z / width) * 2.2);
 
-                ctx.fillStyle = '#cceeff';
+                // Corporate blue star tint
+                ctx.fillStyle = 'rgba(150, 200, 255, 0.8)';
                 ctx.beginPath();
                 ctx.arc(px, py, size, 0, Math.PI * 2);
                 ctx.fill();
@@ -319,10 +338,13 @@
             minuteHand.style.transform = `rotate(${minutesDegrees}deg)`;
             hourHand.style.transform = `rotate(${hoursDegrees}deg)`;
 
+            // Expanded Date Formatting
+            const dayName = now.toLocaleDateString('en-US', { weekday: 'long' }).toUpperCase();
             const dayStr = String(now.getDate()).padStart(2, '0');
             const monthStr = String(now.getMonth() + 1).padStart(2, '0'); 
             const yearStr = now.getFullYear();
-            dateElement.innerText = `${dayStr}.${monthStr}.${yearStr}`;
+            
+            dateElement.innerText = `${dayName} | ${dayStr}.${monthStr}.${yearStr}`;
         }
 
         updateClock();
